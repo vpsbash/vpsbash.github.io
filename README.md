@@ -17,7 +17,7 @@ wget -qO- --no-check-certificate https://vpsbash.github.io/superbench.sh | bash
 ```
 
 ```
-wget -qO- https://vpsbash.github.io/bench.sh | bash
+wget -qO- --no-check-certificate https://vpsbash.github.io/bench.sh | bash
 ```
 
 ```
