@@ -1,5 +1,6 @@
 # 欢迎来到vpsbash
 >本站所有测试脚本均为来自各路大佬
+
 ```
 wget -qO- --no-check-certificate https://vpsbash.github.io/ZBench.sh | bash
 ```
