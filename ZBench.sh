@@ -372,30 +372,3 @@ NetUPCM=$( sed -n "25p" /tmp/speed_cn.txt )
 NetDWCM=$( sed -n "26p" /tmp/speed_cn.txt )
 NetPiCM=$( sed -n "27p" /tmp/speed_cn.txt )
 
-wget  -N --no-check-certificate https://raw.githubusercontent.com/FunctionClub/ZBench/master/Generate.py >> /dev/null 2>&1
-python Generate.py && rm -rf Generate.py && cp /root/report.html /tmp/report/index.html
-TSM=$( cat /tmp/shm.txt_table )
-TST=$( cat /tmp/sht.txt_table )
-TSU=$( cat /tmp/shu.txt_table )
-TGM=$( cat /tmp/gdm.txt_table )
-TGT=$( cat /tmp/gdt.txt_table )
-TGU=$( cat /tmp/gdu.txt_table )
-
-# If use simple http server
-while :; do echo
-  read -p "Do you want to check your Test Report? [y/n]: " ifreport
-  if [[ ! $ifreport =~ ^[y,n]$ ]]; then
-    echo "Input error! Please only input 'y' or 'n'"
-  else
-    break
-  fi
-done
-
-if [[ $ifreport == 'y' ]];then
-    echo ""
-    myip=`curl -m 10 -s http://members.3322.org/dyndns/getip`
-    echo "Visit http://${myip}:8001/index.html to see your report，Press Ctrl + C to exit." 
-	cd /tmp/report
-    python -m SimpleHTTPServer 8001
-    iptables -I INPUT -m state --state NEW -m tcp -p tcp --dport 8001 -j ACCEPT
-fi
