@@ -18,6 +18,10 @@ wget -qO- --no-check-certificate https://vpsbash.github.io/superbench.sh | bash
 ```
 
 ```
+wget -qO- --no-check-certificate https://vpsbash.github.io/superbench_old.sh | bash
+```
+
+```
 wget -qO- --no-check-certificate https://vpsbash.github.io/bench.sh | bash
 ```
 
@@ -26,3 +30,4 @@ wget --no-check-certificate https://vpsbash.github.io/unixbench.sh
 chmod +x unixbench.sh
 ./unixbench.sh
 ```
+
