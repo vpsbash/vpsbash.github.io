@@ -214,20 +214,423 @@ stty erase '^H' && read -p "(默认: 取消):" other_num
 	fi
 }
 
+Basic_Et(){
+    check_sys
+	if [[ ${release} == "centos" ]] ; then
+    echo "nameserver 1.1.1.1
+    nameserver 8.8.8.8" > /etc/resolv.conf
+    cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+    yum update -y
+    yum install wget curl git vim unzip cron python screen -y
+elif [[ ${release} == "debian" ]]; then
+    echo "nameserver 1.1.1.1
+    nameserver 8.8.8.8" > /etc/resolv.conf
+    cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+    apt-get update -y
+    apt-get install wget curl git vim unzip cron python screen -y
+elif [[ ${release} == "ubuntu" ]]; then
+    echo "nameserver 1.1.1.1
+    nameserver 8.8.8.8" > /etc/resolv.conf
+    cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+    sudo apt-get update -y
+    sudo apt-get install wget curl git vim unzip cron python screen -y
+else
+		echo -e "${Error} 您的操作系统未在支持列表内" && exit 0
+	fi
+}
+
+BT(){
+    check_sys
+if [[ ${release} == "centos" ]]; then
+    yum install -y wget && wget -O install.sh http://download.bt.cn/install/install.sh && sh install.sh
+elif [[ ${release} == "debian" ]]; then
+    wget -O install.sh http://download.bt.cn/install/install-ubuntu.sh && bash install.sh
+elif [[ ${release} == "ubuntu" ]]; then
+    wget -O install.sh http://download.bt.cn/install/install-ubuntu.sh && sudo bash install.sh
+else
+		echo -e "${Error} 您的操作系统未在支持列表内" && exit 0
+	fi
+}
+
+AppNode(){
+    check_sys
+if [[ ${release} == "centos" ]]; then
+    INSTALL_AGENT=1 INSTALL_APPS=sitemgr INIT_SWAPFILE=1 INSTALL_PKGS='nginx-stable,php56(zend-guard-loader/ioncube-loader/source-guardian-loader),php55(zend-guard-loader/ioncube-loader/source-guardian-loader),php54(zend-guard-loader/ioncube-loader/source-guardian-loader),php53(zend-guard-loader/ioncube-loader/source-guardian-loader),php72(zend-guard-loader/ioncube-loader/source-guardian-loader),php71(zend-guard-loader/ioncube-loader/source-guardian-loader),php70(zend-guard-loader/ioncube-loader/source-guardian-loader),pureftpd,mysql56' bash -c "$(curl -sS http://dl.appnode.com/install.sh)"
+else
+		echo -e "${Error} 您的操作系统未在支持列表内" && exit 0
+	fi
+}
+
+CyberPanel(){
+    check_sys
+if [[ ${release} == "centos" ]]; then
+    sh <(curl https://cyberpanel.net/install.sh || wget -O - https://cyberpanel.net/install.sh)
+else
+		echo -e "${Error} 您的操作系统未在支持列表内" && exit 0
+	fi
+}
+
+Panel(){
+echo && echo -e "你要安装什么面板? ${Red_font_prefix}${Font_color_suffix}
+ ${Green_font_prefix}1.${Font_color_suffix} BT
+ ${Green_font_prefix}2.${Font_color_suffix} AppNode
+ ${Green_font_prefix}3.${Font_color_suffix} CyberPanel
+  ${Tip}Appnode和CyberPanel只支持Centos系列系统
+" && echo
+stty erase '^H' && read -p "(默认: 取消):" other_num
+	[[ -z "${other_num}" ]] && echo "已取消..." && exit 0
+	if [[ ${other_num} == "1" ]]; then
+		BT
+	elif [[ ${other_num} == "2" ]]; then
+		AppNode
+	elif [[ ${other_num} == "3" ]]; then
+		CyberPanel
+
+	else
+		echo -e "${Error} 请输入正确的数字 [1-3]" && exit 0
+	fi
+}
+
+LNMP_1(){
+    check_sys
+if [[ ${release} == "centos" ]]; then
+    yum install screen wget -y
+elif [[ ${release} == "debian" ]]; then
+    apt-get install screen wget -y
+elif [[ ${release} == "ubuntu" ]]; then
+    sudo apt-get install screen wget -y
+else
+		echo -e "${Error} 您的操作系统未在支持列表内" && exit 0
+	fi
+wget -c http://soft.vpser.net/lnmp/lnmp1.4.tar.gz && tar zxf lnmp1.4.tar.gz && cd lnmp1.4 && ./install.sh lnmp
+}
+
+LAMP(){
+    check_sys
+if [[ ${release} == "centos" ]]; then
+yum install wget screen git -y 
+elif [[ ${release} == "debian" ]]; then
+    apt-get install screen wget git -y
+elif [[ ${release} == "ubuntu" ]]; then
+    sudo apt-get install screen wget git -y
+else
+		echo -e "${Error} 您的操作系统未在支持列表内" && exit 0
+	fi
+git clone https://github.com/teddysun/lamp.git
+cd lamp
+chmod +x *.sh
+screen -S lamp
+./lamp.sh
+}
+
+OneinStack(){
+    check_sys
+if [[ ${release} == "centos" ]]; then
+    yum install wget screen curl python -y
+elif [[ ${release} == "debian" ]]; then
+    apt-get install wget screen curl python -y
+elif [[ ${release} == "ubuntu" ]]; then
+    sudo apt-get install wget screen curl python -y
+else
+		echo -e "${Error} 您的操作系统未在支持列表内" && exit 0
+fi
+wget http://mirrors.linuxeye.com/oneinstack-full.tar.gz
+tar xzf oneinstack-full.tar.gz
+cd oneinstack
+screen -S oneinstack
+./install.sh
+}
+
+LAMP_YUM(){
+    check_sys
+if [[ ${release} == "centos" ]]; then
+    wget --no-check-certificate https://github.com/teddysun/lamp-yum/archive/master.zip -O lamp-yum.zip
+    unzip lamp-yum.zip
+    cd lamp-yum-master/
+    chmod +x *.sh
+    ./lamp.sh 2>&1 | tee lamp.log
+else
+		echo -e "${Error} 您的操作系统未在支持列表内" && exit 0
+fi
+}
+
+LNMP(){ echo -e "你要安装什么一键安装包?
+ ${Green_font_prefix}1.${Font_color_suffix} LNNP一键安装脚本
+ ${Green_font_prefix}2.${Font_color_suffix} LAMP一键安装脚本
+ ${Green_font_prefix}3.${Font_color_suffix} OneinStack
+ ${Green_font_prefix}4.${Font_color_suffix} LAMP一键yum安装脚本(适合小内存)
+" && echo
+stty erase '^H' && read -p "(默认: 取消):" other_num
+	[[ -z "${other_num}" ]] && echo "已取消..." && exit 0
+	if [[ ${other_num} == "1" ]]; then
+		LNMP_1
+	elif [[ ${other_num} == "2" ]]; then
+		LAMP
+	elif [[ ${other_num} == "3" ]]; then
+		OneinStack
+	elif [[ ${other_num} == "4" ]]; then
+		LAMP_YUM
+	else
+		echo -e "${Error} 请输入正确的数字 [1-4]" && exit 0
+	fi
+}
+
+BBR_1(){
+    check_sys
+if [[ ${release} == "debian" ]]; then
+    wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/bbr.sh && chmod +x bbr.sh && bash bbr.sh
+elif [[ ${release} == "ubuntu" ]]; then
+    wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/bbr.sh && chmod +x bbr.sh && bash bbr.sh
+elif [[ ${release} == "centos" ]]; then
+    wget -N --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh && chmod +x bbr.sh && bash bbr.sh
+else
+		echo -e "${Error} 您的操作系统未在支持列表内" && exit 0
+	fi
+}
+
+Server_Speeder(){
+    wget -N --no-check-certificate https://github.com/91yun/serverspeeder/raw/master/serverspeeder.sh && bash serverspeeder.sh
+}
+
+LotServer(){
+    wget --no-check-certificate -qO /tmp/appex.sh "https://raw.githubusercontent.com/0oVicero0/serverSpeeder_Install/master/appex.sh" && bash /tmp/appex.sh 'install'
+}
+
+BBR_2(){
+    check_sys
+if [[ ${release} == "centos" ]]; then 
+    wget https://raw.githubusercontent.com/tcp-nanqinlang/general/master/General/CentOS/bash/tcp_nanqinlang-1.3.2.sh
+    bash tcp_nanqinlang-1.3.2.sh
+elif [[ ${release} == "debian" ]]; then
+    wget https://github.com/tcp-nanqinlang/general/releases/download/3.4.2.1/tcp_nanqinlang-fool-1.3.0.sh
+    bash tcp_nanqinlang-fool-1.3.0.sh
+elif [[ ${release} == "ubuntu" ]]; then
+    wget https://github.com/tcp-nanqinlang/general/releases/download/3.4.2.1/tcp_nanqinlang-fool-1.3.0.sh
+    bash tcp_nanqinlang-fool-1.3.0.sh
+else
+		echo -e "${Error} 您的操作系统未在支持列表内" && exit 0
+	fi
+}
+
+BBR_3(){
+    check_sys
+if [[ ${release} == "centos" ]]; then 
+    wget https://github.com/tcp-nanqinlang/lkl-rinetd/releases/download/1.1.0/tcp_nanqinlang-   rinetd-centos-multiNIC.sh
+    bash tcp_nanqinlang-rinetd-centos-mult iNIC.sh
+elif [[ ${release} == "debian" ]]; then
+    wget https://github.com/tcp-nanqinlang/lkl-rinetd/releases/download/1.1.0/tcp_nanqinlang-rinetd-debianorubuntu-multiNIC.sh
+    bash tcp_nanqinlang-rinetd-debianorubuntu-multiNIC.sh
+elif [[ ${release} == "ubuntu" ]]; then
+    wget https://github.com/tcp-nanqinlang/lkl-rinetd/releases/download/1.1.0/tcp_nanqinlang-rinetd-debianorubuntu-multiNIC.sh
+    bash tcp_nanqinlang-rinetd-debianorubuntu-multiNIC.sh
+else
+		echo -e "${Error} 您的操作系统未在支持列表内" && exit 0
+	fi
+}
+
+BBRLos(){ echo -e "你要安装什么？
+  ${Green_font_prefix}1.${Font_color_suffix} 配置 BBR
+  ${Green_font_prefix}2.${Font_color_suffix} 配置 锐速
+  ${Green_font_prefix}3.${Font_color_suffix} 配置 LotServer
+  ${Green_font_prefix}4.${Font_color_suffix} 配置 魔改BBR
+  ${Green_font_prefix}5.${Font_color_suffix} 配置 魔改BBR IN OPENVZ
+  ${Tip} 锐速/LotServer 不支持 OpenVZ！
+  ${Tip} 锐速和LotServer不能共存！
+"
+	stty erase '^H' && read -p "(默认: 取消):" other_num
+	[[ -z "${other_num}" ]] && echo "已取消..." && exit 0
+	if [[ ${other_num} == "1" ]]; then
+		BBR_1
+	elif [[ ${other_num} == "2" ]]; then
+		Server_Speeder
+	elif [[ ${other_num} == "3" ]]; then
+		LotServer
+	elif [[ ${other_num} == "4" ]]; then
+		BBR_2
+	elif [[ ${other_num} == "5" ]]; then
+		BBR_3
+	else
+		echo -e "${Error} 请输入正确的数字 [1-5]" && exit 0
+	fi
+}
+
+SSRR(){
+wget -N --no-check-certificate https://raw.githubusercontent.com/FanhuaCloud/Shadowsocksrrmu/master/ssrmu.sh && chmod +x ssrmu.sh && bash ssrmu.sh
+}
+
+SS4in1(){
+wget --no-check-certificate https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocks-all.sh
+chmod +x shadowsocks-all.sh
+./shadowsocks-all.sh 2>&1 | tee shadowsocks-all.log
+}
+
+V2_1(){
+    check_sys
+if [[ ${release} == "centos" ]]; then yum update -y && yum install curl -y
+elif [[ ${release} == "debian" ]]; then apt-get update -y && apt-get install curl -y
+elif [[ ${release} == "ubuntu" ]]; then sudo aapt-get update -y && apt-get install curl -y
+else
+		echo -e "${Error} 您的操作系统未在支持列表内" && exit 0
+	fi
+bash <(curl -s -L https://233blog.com/v2ray.sh)
+}
+
+V2_2(){
+    wget -N --no-check-certificate https://raw.githubusercontent.com/FunctionClub/V2ray.Fun/master/install.sh && bash install.sh
+}
+
+V2_3(){
+    bash -c "$(curl -fsSL https://git.io/vpOeN)"
+}
+
+Socks5_Stop()
+{
+    kill -9 $(ps aux | grep "gost" | sed '/grep/d' | awk '{print $2}')
+    S5
+}
+
+
+user(){
+echo "请输入要设置的用户名"
+	stty erase '^H' && read -p "(默认: user):" user
+	[[ -z "${user}" ]] && user="user"
+	echo && echo ${Separator_1} && echo -e "	用户名 : ${Green_font_prefix}${user}${Font_color_suffix}" && echo ${Separator_1} && echo
+}
+passwd(){
+echo "请输入要设置的密码"
+	stty erase '^H' && read -p "(默认: passwd):" passwd
+	[[ -z "${passwd}" ]] && passwd="passwd"
+	echo && echo ${Separator_1} && echo -e "	密码 : ${Green_font_prefix}${password}${Font_color_suffix}" && echo ${Separator_1} && echo
+}
+port(){
+echo -e "请输入要开启的端口"
+	stty erase '^H' && read -p "(默认: 1234):" port
+	[[ -z "${port}" ]] && port="1234"
+	echo && echo ${Separator_1} && echo -e "	端口 : ${Green_font_prefix}${port}${Font_color_suffix}" && echo ${Separator_1} && echo
+}
+Socks5_Up()
+{
+    user    
+	passwd
+	port
+nohup gost -L $user:$passwd@:$port socks5://:$port > /dev/null 2>&1 &
+echo "TeleGrem 专用链接"
+IP=$(ip a|grep -w 'inet'|grep 'global'|sed 's/^.*inet //g'|sed 's/\/[0-9][0-9].*$//g')
+echo "tg://socks?server=$IP&port=$port&user=$user&pass=$passwd"
+    S5
+}
+
+Socks5_Set()
+{
+    check_sys
+if [[ ${release} == "centos" ]]; then yum -y install wget -y
+elif [[ ${release} == "debian" ]]; then apt-get -y install wget -y
+elif [[ ${release} == "ubuntu" ]]; then sudo apt-get -y install wget -y
+else
+		echo -e "${Error} 您的操作系统未在支持列表内" && exit 0
+	fi
+Ver=`wget -qO- https://github.com/ginuerzh/gost/releases/latest | grep "css-truncate-target" | awk '{print $2}' | sed 's/class=\"css-truncate-target\">//g' | sed 's/<\/span>//g'`
+Vernv=`echo ${Ver} | sed 's/v//'`
+wget https://github.com/ginuerzh/gost/releases/download/${Ver}/gost_${Vernv}_linux_amd64.tar.gz
+tar -zxf gost_${Vernv}_linux_amd64.tar.gz
+cp gost_${Vernv}_linux_amd64/gost /usr/bin/gost
+rm -rf gost_${Vernv}_linux_amd64*
+echo "安装完成，请启动它"
+    S5
+}
+
+S5(){
+echo -e "输入你的选择 ${Red_font_prefix}${Font_color_suffix}
+ ${Green_font_prefix}1.${Font_color_suffix} 安装socks5
+ ${Green_font_prefix}2.${Font_color_suffix} 启动socks5
+ ${Green_font_prefix}3.${Font_color_suffix} 停止sock5
+"
+stty erase '^H' && read -p "(默认: 取消):" other_num
+	[[ -z "${other_num}" ]] && echo "已取消..." && exit 0
+	if [[ ${other_num} == "1" ]]; then
+		Socks5_Set
+	elif [[ ${other_num} == "2" ]]; then
+		Socks5_Up
+	elif [[ ${other_num} == "3" ]]; then
+		Socks5_Stop
+	else
+		echo -e "${Error} 请输入正确的数字 [1-3]" && exit 0
+	fi
+}
+
+
+FQ(){ echo -e "你要安装什么软件?
+ ${Green_font_prefix}1.${Font_color_suffix} ShadowsocksRR MudbJSON
+ ${Green_font_prefix}2.${Font_color_suffix} Shadowsocks(R) 4 in 1
+ ${Green_font_prefix}3.${Font_color_suffix} V2ray 一键
+ ${Green_font_prefix}4.${Font_color_suffix} V2ray 面板
+ ${Green_font_prefix}5.${Font_color_suffix} V2ray 原版
+ ${Green_font_prefix}6.${Font_color_suffix} Socks5
+" && echo
+stty erase '^H' && read -p "(默认: 取消):" other_num
+	[[ -z "${other_num}" ]] && echo "已取消..." && exit 0
+	if [[ ${other_num} == "1" ]]; then
+		SSRR
+	elif [[ ${other_num} == "2" ]]; then
+		SS4in1
+	elif [[ ${other_num} == "3" ]]; then
+		V2_1
+	elif [[ ${other_num} == "4" ]]; then
+		V2_2
+	elif [[ ${other_num} == "5" ]]; then
+		V2_3
+	elif [[ ${other_num} == "6" ]]; then
+		S5
+
+	else
+		echo -e "${Error} 请输入正确的数字 [1-6]" && exit 0
+	fi
+}
+
+Install_Software(){ echo -e "你要安装什么环境?
+ ${Green_font_prefix}1.${Font_color_suffix} 基本环境安装
+ ${Green_font_prefix}2.${Font_color_suffix} 安装LAMP/LNMP面板
+ ${Green_font_prefix}3.${Font_color_suffix} 安装LNMP/LNMP一键安装包
+ ${Green_font_prefix}4.${Font_color_suffix} 安装BBR/锐速
+ ${Green_font_prefix}5.${Font_color_suffix} 安装魔法上网软件
+" && echo
+stty erase '^H' && read -p "(默认: 取消):" other_num
+	[[ -z "${other_num}" ]] && echo "已取消..." && exit 0
+	if [[ ${other_num} == "1" ]]; then
+		Basic_Et
+	elif [[ ${other_num} == "2" ]]; then
+		Panel
+	elif [[ ${other_num} == "3" ]]; then
+		LNMP
+	elif [[ ${other_num} == "4" ]]; then
+		BBRLos
+	elif [[ ${other_num} == "5" ]]; then
+		FQ
+
+	else
+		echo -e "${Error} 请输入正确的数字 [1-5]" && exit 0
+	fi
+}
+
+
 echo -e " VPS一键管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
-  ${Green_font_prefix}1.${Font_color_suffix} VPS测试
-  ${Green_font_prefix}2.${Font_color_suffix} 退出脚本
+    ${Green_font_prefix}1.${Font_color_suffix} VPS测试
+    ${Green_font_prefix}2.${Font_color_suffix} 软件安装
+    ${Green_font_prefix}3.${Font_color_suffix} 退出脚本
  "
-	echo && stty erase '^H' && read -p "请输入数字 [1-2]：" num
+	echo && stty erase '^H' && read -p "请输入数字 [1-3]：" num
 case "$num" in
 	1)
 	VPS_TEST
 	;;
 	2)
+	Install_Software
+	;;
+	3)
 	exit 0
 	;;
 	*)
-	echo -e "${Error} 请输入正确的数字 [1-2]" && exit 0
+	echo -e "${Error} 请输入正确的数字 [1-3]" && exit 0
 	;;
 esac
 fi
