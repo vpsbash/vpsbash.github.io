@@ -5,11 +5,16 @@ export PATH
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
 #	Description: Set up iptables
 #	Version: 0.0.1
-#=================================================
+#	Author: VPSBASH
+#	Email: VPSBASH@GMAIL.COM
+#	#Scripts copy from the big guys
+#================================================
+
 sh_ver="0.0.1"
 check_root(){
 	[[ $EUID != 0 ]] && echo -e "${Error} 当前账号非ROOT(或没有ROOT权限)，无法继续操作，请使用${Green_background_prefix} sudo su ${Font_color_suffix}来获取临时ROOT权限（执行后会提示输入当前账号的密码）。" && exit 1
 }
+
 eck_sys(){
 	if [[ -f /etc/redhat-release ]]; then
 		release="centos"
@@ -28,7 +33,7 @@ eck_sys(){
     fi
 	bit=`uname -m`
 }
-# 设置 防火墙规则
+
 
 Add_iptables(){
 echo -e "请输入要开启的端口"
@@ -52,8 +57,9 @@ echo -e "请输入要开启的端口"
 		ip6tables -I INPUT -m state --state NEW -m udp -p udp --dport ${port} -j ACCEPT
 	fi
 	Save_iptables
-exit 0
+exit 1
 }
+
 Del_iptables(){
 echo -e "请输入要关闭的端口"
 	stty erase '^H' && read -p "(默认: 2333):" port1
@@ -76,7 +82,7 @@ echo -e "请输入要关闭的端口"
 		ip6tables -D INPUT -m state --state NEW -m udp -p udp --dport ${port1} -j ACCEPT
 	fi
 	Save_iptables
-	exit 0
+	exit 1
 }
 Save_iptables(){
 	if [[ ${release} == "centos" ]]; then
@@ -87,21 +93,9 @@ Save_iptables(){
 		ip6tables-save > /etc/ip6tables.up.rules
 	fi
 }
-Set_iptables(){
-	if [[ ${release} == "centos" ]]; then
-		service iptables save
-		service ip6tables save
-		chkconfig --level 2345 iptables on
-		chkconfig --level 2345 ip6tables on
-	else
-		iptables-save > /etc/iptables.up.rules
-		ip6tables-save > /etc/ip6tables.up.rules
-		echo -e '#!/bin/bash\n/sbin/iptables-restore < /etc/iptables.up.rules\n/sbin/ip6tables-restore < /etc/ip6tables.up.rules' > /etc/network/if-pre-up.d/iptables
-		chmod +x /etc/network/if-pre-up.d/iptables
-	fi
-}
 
-echo -e "  一键配置iptables
+
+echo -e "  一键配置iptables ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
   ${Green_font_prefix}1.${Font_color_suffix} 添加iptables
   ${Green_font_prefix}2.${Font_color_suffix} 删除iptables
  "
