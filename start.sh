@@ -5,13 +5,13 @@ export PATH
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
 #	Description: Test the vps and install the software
-#	Version: 0.0.1
+#	Version: 0.0.2
 #	Author: VPSBASH
 #	Email: VPSBASH@GMAIL.COM
 #	#Scripts copy from the big guys
 #=================================================
 
-sh_ver="0.0.1"
+sh_ver="0.0.2"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
@@ -237,6 +237,7 @@ elif [[ ${release} == "ubuntu" ]]; then
 else
 		echo -e "${Error} 您的操作系统未在支持列表内" && exit 0
 	fi
+exit 0
 }
 
 BT(){
@@ -244,8 +245,12 @@ BT(){
 if [[ ${release} == "centos" ]]; then
     yum install -y wget && wget -O install.sh http://download.bt.cn/install/install.sh && sh install.sh
 elif [[ ${release} == "debian" ]]; then
+    apt-get update -y
+    apt-get install vim wget unzip cron git unrar-free curl python screen libncurses-dev gawk sed grep virt-what cmake libncurses5-dev libssl-dev libcurl4-openssl-dev pkg-config libicu-dev libfreetype6-dev -y
     wget -O install.sh http://download.bt.cn/install/install-ubuntu.sh && bash install.sh
 elif [[ ${release} == "ubuntu" ]]; then
+    sudo apt-get update -y
+    sudo apt-get install vim wget unzip cron git unrar-free curl python screen libncurses-dev gawk sed grep virt-what cmake libncurses5-dev libssl-dev libcurl4-openssl-dev pkg-config libicu-dev libfreetype6-dev -y
     wget -O install.sh http://download.bt.cn/install/install-ubuntu.sh && sudo bash install.sh
 else
 		echo -e "${Error} 您的操作系统未在支持列表内" && exit 0
@@ -429,11 +434,11 @@ else
 }
 
 BBRLos(){ echo -e "你要安装什么？
-  ${Green_font_prefix}1.${Font_color_suffix} 配置 BBR
-  ${Green_font_prefix}2.${Font_color_suffix} 配置 锐速
-  ${Green_font_prefix}3.${Font_color_suffix} 配置 LotServer
-  ${Green_font_prefix}4.${Font_color_suffix} 配置 魔改BBR
-  ${Green_font_prefix}5.${Font_color_suffix} 配置 魔改BBR IN OPENVZ
+  ${Green_font_prefix}1.${Font_color_suffix} KVM - BBR
+  ${Green_font_prefix}2.${Font_color_suffix} KVM - 锐速
+  ${Green_font_prefix}3.${Font_color_suffix} KVM - LotServer
+  ${Green_font_prefix}4.${Font_color_suffix} KVM - 魔改BBR
+  ${Green_font_prefix}5.${Font_color_suffix} OVZ - 魔改BBR
   ${Tip} 锐速/LotServer 不支持 OpenVZ！
   ${Tip} 锐速和LotServer不能共存！
 "
@@ -514,9 +519,11 @@ Socks5_Up()
 	passwd
 	port
 nohup gost -L $user:$passwd@:$port socks5://:$port > /dev/null 2>&1 &
+echo "nohup gost -L $user:$passwd@:$port socks5://:$port > /dev/null 2>&1 &" >> /etc/rc.local
+chmod 755 /etc/rc.local
 echo "TeleGrem 专用链接"
 IP=$(ip a|grep -w 'inet'|grep 'global'|sed 's/^.*inet //g'|sed 's/\/[0-9][0-9].*$//g')
-echo "tg://socks?server=$IP&port=$port&user=$user&pass=$passwd"
+echo " tg://socks?server=$IP&port=$port&user=$user&pass=$passwd "
     S5
 }
 
@@ -544,6 +551,7 @@ echo -e "输入你的选择 ${Red_font_prefix}${Font_color_suffix}
  ${Green_font_prefix}1.${Font_color_suffix} 安装socks5
  ${Green_font_prefix}2.${Font_color_suffix} 启动socks5
  ${Green_font_prefix}3.${Font_color_suffix} 停止sock5
+ ${Green_font_prefix}4.${Font_color_suffix} 退出脚本
 "
 stty erase '^H' && read -p "(默认: 取消):" other_num
 	[[ -z "${other_num}" ]] && echo "已取消..." && exit 0
@@ -553,8 +561,10 @@ stty erase '^H' && read -p "(默认: 取消):" other_num
 		Socks5_Up
 	elif [[ ${other_num} == "3" ]]; then
 		Socks5_Stop
+	elif [[ ${other_num} == "3" ]]; then
+		exit 1
 	else
-		echo -e "${Error} 请输入正确的数字 [1-3]" && exit 0
+		echo -e "${Error} 请输入正确的数字 [1-4]" && exit 0
 	fi
 }
 
