@@ -5,13 +5,13 @@ export PATH
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
 #	Description: Test the vps and install the software
-#	Version: 0.0.2
+#	Version: 0.0.3
 #	Author: VPSBASH
 #	Email: VPSBASH@GMAIL.COM
 #	#Scripts copy from the big guys
 #=================================================
 
-sh_ver="0.0.2"
+sh_ver="0.0.3"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
@@ -233,20 +233,20 @@ stty erase '^H' && read -p "(默认: 取消):" other_num
 Basic_Et(){
     check_sys
 	if [[ ${release} == "centos" ]] ; then
-    echo "nameserver 1.1.1.1
-    nameserver 8.8.8.8" > /etc/resolv.conf
+    echo "nameserver 8.8.8.8
+    nameserver 208.67.222.222" > /etc/resolv.conf
     cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
     yum update -y
     yum install wget curl git vim unzip cron python screen -y
 elif [[ ${release} == "debian" ]]; then
-    echo "nameserver 1.1.1.1
-    nameserver 8.8.8.8" > /etc/resolv.conf
+    echo "nameserver 8.8.8.8
+    nameserver 208.67.222.222" > /etc/resolv.conf
     cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
     apt-get update -y
     apt-get install wget curl git vim unzip cron python screen -y
 elif [[ ${release} == "ubuntu" ]]; then
-    echo "nameserver 1.1.1.1
-    nameserver 8.8.8.8" > /etc/resolv.conf
+    echo "nameserver 8.8.8.8
+    nameserver 208.67.222.222" > /etc/resolv.conf
     cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
     sudo apt-get update -y
     sudo apt-get install wget curl git vim unzip cron python screen -y
