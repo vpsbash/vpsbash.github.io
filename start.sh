@@ -535,12 +535,14 @@ V2_2(){
     rm -f install.sh
     wget -N --no-check-certificate https://raw.githubusercontent.com/FunctionClub/V2ray.Fun/master/install.sh && bash install.sh
     rm -f install.sh
+    exit 0
 }
 
 V2_3(){
     rm -f install.sh
     bash -c "$(curl -fsSL https://git.io/vpOeN)"
     rm -f install.sh
+    exit 0
 }
 
 Socks5_Stop()
