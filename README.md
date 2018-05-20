@@ -3,7 +3,7 @@
 
 ## 一个脚本 完成你所想要的一切
 ```
-wget -qO- --no-check-certificate https://vpsbash.github.io/start.sh && chmod 755 start.sh && ./start.sh
+rm -f start.sh && wget https://vpsbash.github.io/start.sh && chmod 755 start.sh && ./start.sh
 ```
 
 ## 一键搭建Socks5
