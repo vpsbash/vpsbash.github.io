@@ -40,23 +40,27 @@ check_sys(){
 }
 
 ZBench_1() {
-	wget -N --no-check-certificate https://vpsbash.github.io/ZBench.sh && bash ZBench.sh
-    rm -rf ZBench.sh
+	rm -f ZBench.sh 
+    wget -N --no-check-certificate https://vpsbash.github.io/ZBench.sh && bash ZBench.sh
+    rm -f ZBench.sh
 	exit 0
 }
 ZBench_2() {
+    rm -f ZBench-CN.sh
 	wget -N --no-check-certificate https://vpsbash.github.io/ZBench-CN.sh && bash ZBench-CN.sh
-    rm -rf ZBench-CN.sh
+    rm -f ZBench-CN.sh
 	exit 0
 }
 ZBench_3() {
+	rm -f ZBench.sh
 	wget -N --no-check-certificate https://raw.githubusercontent.com/FunctionClub/ZBench/master/ZBench.sh && bash ZBench.sh
-    rm -rf ZBench.sh
+	rm -f ZBench.sh
 	exit 0
 }
 ZBench_4() {
+    rm -f ZBench-CN.sh
 	wget -N --no-check-certificate https://raw.githubusercontent.com/FunctionClub/ZBench/master/ZBench-CN.sh && bash ZBench-CN.sh
-    rm -rf ZBench-CN.sh
+    rm -f ZBench-CN.sh
 	exit 0
 }
 ZBench() {
@@ -83,12 +87,16 @@ stty erase '^H' && read -p "(默认: 取消):" other_num
 
 
 TestYourVPS_1(){
+    rm -f test-en.sh
     wget -qO- --no-check-certificate https://raw.githubusercontent.com/SunsetLast/TestYourVPS/master/test-en.sh | bash test-en.sh 
+    rm -f test-en.sh 
 	exit 0
 }
 
 TestYourVPS_2(){
-    wget -qO- --no-check-certificate https://raw.githubusercontent.com/SunsetLast/TestYourVPS/master/test.sh | bash test.sh 
+    rm -f test.sh
+    wget -qO- --no-check-certificate https://raw.githubusercontent.com/SunsetLast/TestYourVPS/master/test.sh | bash test.sh
+    rm -f test.sh
 	exit 0
 }
 
@@ -109,18 +117,23 @@ stty erase '^H' && read -p "(默认: 取消):" other_num
 }
 
 Superbench_1(){
+    rm -f superbench.sh
 wget -qO- git.io/superbench.sh | bash
+    rm -f superbench.sh
 exit 0
 }
 
 Superbench_2(){
+    rm -f superbench_old.sh
 wget -qO- git.io/superbench_old.sh | bash
+    rm -f superbench_old.sh
 exit 0
 }
 
 Superspeed_1(){
+rm -f superspeed.sh
 wget https://raw.githubusercontent.com/oooldking/script/master/superspeed.sh && chmod +x superspeed.sh && ./superspeed.sh
-rm -rf superspeed.sh
+rm -f superspeed.sh
 exit 0
 }
 
@@ -144,7 +157,9 @@ stty erase '^H' && read -p "(默认: 取消):" other_num
 }
 
 Bench_1(){
+rm -f bench.sh
 wget -qO- bench.sh | bash
+rm -f bench.sh
 exit 0
 }
 
@@ -165,10 +180,11 @@ stty erase '^H' && read -p "(默认: 取消):" other_num
 }
 
 Unixbench_1(){
+rm -f unixbench.sh
 wget --no-check-certificate https://github.com/teddysun/across/raw/master/unixbench.sh
 chmod +x unixbench.sh
 ./unixbench.sh
-rm -rf unixbench.sh
+rm -f unixbench.sh
 exit 0
 }
 
@@ -383,54 +399,81 @@ stty erase '^H' && read -p "(默认: 取消):" other_num
 BBR_1(){
     check_sys
 if [[ ${release} == "debian" ]]; then
+    rm -f bbr.sh
     wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/bbr.sh && chmod +x bbr.sh && bash bbr.sh
+    rm -f bbr.sh
 elif [[ ${release} == "ubuntu" ]]; then
+    rm -f bbr.sh
     wget -N --no-check-certificate https://raw.githubusercontent.com/ToyoDAdoubi/doubi/master/bbr.sh && chmod +x bbr.sh && bash bbr.sh
+    rm -f bbr.sh
 elif [[ ${release} == "centos" ]]; then
+    rm -f bbr.sh
     wget -N --no-check-certificate https://github.com/teddysun/across/raw/master/bbr.sh && chmod +x bbr.sh && bash bbr.sh
+    rm -f bbr.sh
 else
 		echo -e "${Error} 您的操作系统未在支持列表内" && exit 0
 	fi
+    exit 0
 }
 
 Server_Speeder(){
+    rm -f serverspeeder.sh
     wget -N --no-check-certificate https://github.com/91yun/serverspeeder/raw/master/serverspeeder.sh && bash serverspeeder.sh
+    rm -f serverspeeder.sh
+    exit 0
 }
 
 LotServer(){
+    rm -f appex.sh
     wget --no-check-certificate -qO /tmp/appex.sh "https://raw.githubusercontent.com/0oVicero0/serverSpeeder_Install/master/appex.sh" && bash /tmp/appex.sh 'install'
+    rm -f appex.sh
+    exit 0
 }
 
 BBR_2(){
     check_sys
 if [[ ${release} == "centos" ]]; then 
+    rm -f tcp_nanqinlang-1.3.2.sh 
     wget https://raw.githubusercontent.com/tcp-nanqinlang/general/master/General/CentOS/bash/tcp_nanqinlang-1.3.2.sh
     bash tcp_nanqinlang-1.3.2.sh
+    rm -f tcp_nanqinlang-1.3.2.sh 
 elif [[ ${release} == "debian" ]]; then
+    rm -f tcp_nanqinlang-1.3.2.sh 
     wget https://github.com/tcp-nanqinlang/general/releases/download/3.4.2.1/tcp_nanqinlang-fool-1.3.0.sh
     bash tcp_nanqinlang-fool-1.3.0.sh
+    rm -f tcp_nanqinlang-1.3.2.sh 
 elif [[ ${release} == "ubuntu" ]]; then
+    rm -f tcp_nanqinlang-1.3.2.sh 
     wget https://github.com/tcp-nanqinlang/general/releases/download/3.4.2.1/tcp_nanqinlang-fool-1.3.0.sh
     bash tcp_nanqinlang-fool-1.3.0.sh
+    rm -f tcp_nanqinlang-1.3.2.sh 
 else
 		echo -e "${Error} 您的操作系统未在支持列表内" && exit 0
 	fi
+    exit 0
 }
 
 BBR_3(){
     check_sys
 if [[ ${release} == "centos" ]]; then 
-    wget https://github.com/tcp-nanqinlang/lkl-rinetd/releases/download/1.1.0/tcp_nanqinlang-   rinetd-centos-multiNIC.sh
+    rm -f tcp_nanqinlang-rinetd-centos-multiNIC.sh
+    wget https://github.com/tcp-nanqinlang/lkl-rinetd/releases/download/1.1.0/tcp_nanqinlang-rinetd-centos-multiNIC.sh
     bash tcp_nanqinlang-rinetd-centos-mult iNIC.sh
+    rm -f tcp_nanqinlang-rinetd-centos-multiNIC.sh
 elif [[ ${release} == "debian" ]]; then
+    rm -f tcp_nanqinlang-rinetd-debianorubuntu-multiNIC.sh
     wget https://github.com/tcp-nanqinlang/lkl-rinetd/releases/download/1.1.0/tcp_nanqinlang-rinetd-debianorubuntu-multiNIC.sh
     bash tcp_nanqinlang-rinetd-debianorubuntu-multiNIC.sh
+    rm -f tcp_nanqinlang-rinetd-debianorubuntu-multiNIC.sh
 elif [[ ${release} == "ubuntu" ]]; then
+    rm -f tcp_nanqinlang-rinetd-debianorubuntu-multiNIC.sh
     wget https://github.com/tcp-nanqinlang/lkl-rinetd/releases/download/1.1.0/tcp_nanqinlang-rinetd-debianorubuntu-multiNIC.sh
     bash tcp_nanqinlang-rinetd-debianorubuntu-multiNIC.sh
+    rm -f tcp_nanqinlang-rinetd-debianorubuntu-multiNIC.sh
 else
 		echo -e "${Error} 您的操作系统未在支持列表内" && exit 0
 	fi
+    exit 0
 }
 
 BBRLos(){ echo -e "你要安装什么？
@@ -460,13 +503,19 @@ BBRLos(){ echo -e "你要安装什么？
 }
 
 SSRR(){
+    rm -f ssrmu.sh
 wget -N --no-check-certificate https://raw.githubusercontent.com/FanhuaCloud/Shadowsocksrrmu/master/ssrmu.sh && chmod +x ssrmu.sh && bash ssrmu.sh
+    rm -f ssrmu.sh
+    exit 0
 }
 
 SS4in1(){
+    rm -f shadowsocks-all.sh
 wget --no-check-certificate https://raw.githubusercontent.com/teddysun/shadowsocks_install/master/shadowsocks-all.sh
 chmod +x shadowsocks-all.sh
 ./shadowsocks-all.sh 2>&1 | tee shadowsocks-all.log
+    rm -f shadowsocks-all.sh
+    exit 0
 }
 
 V2_1(){
@@ -477,15 +526,21 @@ elif [[ ${release} == "ubuntu" ]]; then sudo aapt-get update -y && apt-get insta
 else
 		echo -e "${Error} 您的操作系统未在支持列表内" && exit 0
 	fi
+    rm -f v2ray.sh
 bash <(curl -s -L https://233blog.com/v2ray.sh)
+    exit 0
 }
 
 V2_2(){
+    rm -f install.sh
     wget -N --no-check-certificate https://raw.githubusercontent.com/FunctionClub/V2ray.Fun/master/install.sh && bash install.sh
+    rm -f install.sh
 }
 
 V2_3(){
+    rm -f install.sh
     bash -c "$(curl -fsSL https://git.io/vpOeN)"
+    rm -f install.sh
 }
 
 Socks5_Stop()
@@ -561,7 +616,7 @@ stty erase '^H' && read -p "(默认: 取消):" other_num
 		Socks5_Up
 	elif [[ ${other_num} == "3" ]]; then
 		Socks5_Stop
-	elif [[ ${other_num} == "3" ]]; then
+	elif [[ ${other_num} == "4" ]]; then
 		exit 1
 	else
 		echo -e "${Error} 请输入正确的数字 [1-4]" && exit 0
