@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
 #	Description: Test the vps and install the software
-#	Version: 0.0.5
+#	Version: 0.0.6
 #	Author: VPSBASH
 #	Email: VPSBASH@GMAIL.COM
 #	#Scripts copy from the big guys
 #=================================================
-sh_ver="0.0.5"
+sh_ver="0.0.6"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
@@ -613,7 +613,8 @@ echo -e "输入你的选择 ${Red_font_prefix}${Font_color_suffix}
  ${Green_font_prefix}1.${Font_color_suffix} 安装socks5
  ${Green_font_prefix}2.${Font_color_suffix} 启动socks5
  ${Green_font_prefix}3.${Font_color_suffix} 停止sock5
- ${Green_font_prefix}4.${Font_color_suffix} 退出脚本
+ ${Green_font_prefix}4.${Font_color_suffix} 卸载socks5
+ ${Green_font_prefix}5.${Font_color_suffix} 退出脚本
 "
 stty erase '^H' && read -p "(默认: 取消):" other_num
 	[[ -z "${other_num}" ]] && echo "已取消..." && FQ
@@ -624,6 +625,8 @@ stty erase '^H' && read -p "(默认: 取消):" other_num
 	elif [[ ${other_num} == "3" ]]; then
 		Socks5_Stop
 	elif [[ ${other_num} == "4" ]]; then
+		Socks5_Unset
+	elif [[ ${other_num} == "5" ]]; then
 		exit 0
 	else
 		echo -e "${Error} 请输入正确的数字 [1-4]" && FQ
@@ -681,7 +684,15 @@ echo -e "请输入要开启的端口"
 Socks5_Stop()
 {
     kill -9 $(ps aux | grep "gost" | sed '/grep/d' | awk '{print $2}')
+    sed -i '/^nohup.*/d' /etc/rc.local
     S5
+}
+Socks5_Unset(){
+    kill -9 $(ps aux | grep "gost" | sed '/grep/d' | awk '{print $2}')
+    sed -i '/^nohup.*/d' /etc/rc.local
+    rm -rf /usr/bin/gost
+    S5
+
 }
 
 start
