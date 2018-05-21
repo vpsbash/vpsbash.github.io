@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
 #	Description: Test the vps and install the software
-#	Version: 0.0.6
+#	Version: 0.0.7
 #	Author: VPSBASH
 #	Email: VPSBASH@GMAIL.COM
 #	#Scripts copy from the big guys
 #=================================================
-sh_ver="0.0.6"
+sh_ver="0.0.7"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
@@ -43,17 +43,20 @@ start(){
 echo -e " VPS一键管理脚本 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
     ${Green_font_prefix}1.${Font_color_suffix} VPS测试
     ${Green_font_prefix}2.${Font_color_suffix} 软件安装
-    ${Green_font_prefix}3.${Font_color_suffix} 退出脚本
+    ${Green_font_prefix}3.${Font_color_suffix} 系统重装(目前还是测试状态)
+    ${Green_font_prefix}4.${Font_color_suffix} 退出脚本
  " 
-	stty erase '^H' && read -p "请输入数字 [1-3]：" num
+	stty erase '^H' && read -p "请输入数字 [1-4]：" num
 	if [[ ${num} == "1" ]]; then
 		VPS_TEST
 	elif [[ ${num} == "2" ]]; then
 		Install_Software
 	elif [[ ${num} == "3" ]]; then
+		Reinstall
+	elif [[ ${num} == "4" ]]; then
 		exit 0
 	else
-	echo -e "${Error} 请输入正确的数字 [1-3]" && exit 0
+	echo -e "${Error} 请输入正确的数字 [1-4]" && exit 0
 	fi
 }
 
@@ -267,7 +270,6 @@ stty erase '^H' && read -p "(默认: 取消):" other_num
 		BBRLos
 	elif [[ ${other_num} == "5" ]]; then
 		FQ
-
 	else
 		echo -e "${Error} 请输入正确的数字 [1-5]" && start
 	fi
@@ -693,6 +695,189 @@ Socks5_Unset(){
     rm -rf /usr/bin/gost
     S5
 
+}
+
+#二级菜单
+Reinstall(){ echo -e "输入你的选择 ${Red_font_prefix}${Font_color_suffix}
+ ${Green_font_prefix}1.${Font_color_suffix} 重装Debian/Ubuntu/CentOS
+ ${Green_font_prefix}2.${Font_color_suffix} 重装Windows
+ ${Green_font_prefix}3.${Font_color_suffix} 退出脚本
+ ${Tip} 所以系统重装脚本 均不支持 OpenVZ！
+"
+stty erase '^H' && read -p "(默认: 取消):" other_num
+	[[ -z "${other_num}" ]] && echo "已取消..." && start
+	if [[ ${other_num} == "1" ]]; then
+		Reinstall_Lin
+	elif [[ ${other_num} == "2" ]]; then
+		Reinstall_Win
+	elif [[ ${other_num} == "3" ]]; then
+		exit 0
+	else
+		echo -e "${Error} 请输入正确的数字 [1-3]" && start
+	fi
+}
+
+#三级菜单
+Reinstall_Lin(){
+    check_sys
+    if [[ ${release} == "centos" ]]; then
+    yum update -y
+    yum install glibc-common xz openssl gawk file -y
+    elif [[ ${release} == "debian" ]]; then
+    apt-get update -y
+    apt-get install xz-utils openssl gawk file -y
+    elif [[ ${release} == "ubuntu" ]]; then
+    sudo apt-get update -y
+    sudo apt-get install xz-utils openssl gawk file -y
+
+    else
+		echo -e "${Error} 您的操作系统未在支持列表内" && Reinstall
+	fi
+	Choose_SYS
+	Choose_Ver
+	Choose_Ver1
+
+wget --no-check-certificate -qO InstallNET.sh 'https://moeclub.org/attachment/LinuxShell/InstallNET.sh' && chmod a+x InstallNET.sh
+bash InstallNET.sh -$sys $sys1 -v $ver -a
+}
+
+Choose_SYS(){
+echo "请选择你要的Linux版本
+ ${Green_font_prefix}1.${Font_color_suffix} debian
+ ${Green_font_prefix}2.${Font_color_suffix} ubuntu
+ ${Green_font_prefix}3.${Font_color_suffix} centos
+ ${Green_font_prefix}4.${Font_color_suffix} 退出脚本
+ ${Tip} 所以系统重装脚本 均不支持 OpenVZ！
+ "
+
+echo stty erase '^H' && read -p "(默认: 取消):" other_num
+	[[ -z "${other_num}" ]] && echo "已取消..." && Reinstall
+	if [[ ${other_num} == "1" ]]; then
+		sys="d"
+	elif [[ ${other_num} == "2" ]]; then
+		sys="u"
+	elif [[ ${other_num} == "3" ]]; then
+		sys="c"
+	elif [[ ${other_num} == "4" ]]; then
+		exit 0
+	else
+		echo -e "${Error} 请输入正确的数字 [1-4]" && Reinstall
+    fi
+}
+
+Choose_Ver(){
+echo "请选择你要的Linux版本
+ ${Green_font_prefix}1.${Font_color_suffix} X64/amd64
+ ${Green_font_prefix}2.${Font_color_suffix} X32/i386
+ ${Green_font_prefix}3.${Font_color_suffix} 退出脚本
+ ${Tip} 所以系统重装脚本 均不支持 OpenVZ！
+ "
+echo stty erase '^H' && read -p "(默认: 取消):" other_num
+	[[ -z "${other_num}" ]] && echo "已取消..." && Reinstall
+	if [[ ${other_num} == "1" ]]; then
+		v="64"
+	elif [[ ${other_num} == "2" ]]; then
+		v="32"
+	elif [[ ${other_num} == "3" ]]; then
+		exit 0
+	else
+		echo -e "${Error} 请输入正确的数字 [1-3]" && Reinstall
+    fi
+}
+
+Choose_Ver1(){
+echo "请选择你要的Linux版本
+ ${Green_font_prefix}1.${Font_color_suffix} debian 7
+ ${Green_font_prefix}2.${Font_color_suffix} debian 8
+ ${Green_font_prefix}3.${Font_color_suffix} debian 9
+ ${Green_font_prefix}4.${Font_color_suffix} ubuntu 14.04
+ ${Green_font_prefix}5.${Font_color_suffix} ubuntu 16.04
+ ${Green_font_prefix}6.${Font_color_suffix} ubuntu 18.04
+ ${Green_font_prefix}7.${Font_color_suffix} centos 6.9
+ ${Green_font_prefix}8.${Font_color_suffix} 退出脚本
+ ${Tip} 所以系统重装脚本 均不支持 OpenVZ！
+ "
+echo stty erase '^H' && read -p "(默认: 取消):" other_num
+	[[ -z "${other_num}" ]] && echo "已取消..." && Reinstall
+	if [[ ${other_num} == "1" ]]; then
+		sys1="7"
+	elif [[ ${other_num} == "2" ]]; then
+		sys1="8"
+	elif [[ ${other_num} == "3" ]]; then
+		sys1="9"
+	elif [[ ${other_num} == "4" ]]; then
+		sys1="14.04"
+	elif [[ ${other_num} == "5" ]]; then
+		sys1="16.04"
+	elif [[ ${other_num} == "6" ]]; then
+		sys1="18.04"
+	elif [[ ${other_num} == "7" ]]; then
+		sys1="6.9"
+	elif [[ ${other_num} == "8" ]]; then
+		exit 0
+	else
+		echo -e "${Error} 请输入正确的数字 [1-8]" && Reinstall
+    fi
+}
+
+#三级菜单
+Reinstall_Win(){ 
+    check_sys
+    if [[ ${release} == "centos" ]]; then
+    yum update -y
+    yum install glibc-common xz openssl gawk file -y
+    elif [[ ${release} == "debian" ]]; then
+    apt-get update -y
+    apt-get install xz-utils openssl gawk file -y
+    elif [[ ${release} == "ubuntu" ]]; then
+    sudo apt-get update -y
+    sudo apt-get install xz-utils openssl gawk file -y
+
+    else
+		echo -e "${Error} 您的操作系统未在支持列表内" && Reinstall
+	fi
+    echo -e "请选择你需要的Windows版本 ${Red_font_prefix}${Font_color_suffix}
+ ${Green_font_prefix}1.${Font_color_suffix} Windows Embedded 7 Industry Pro x86 administrator密码为: Vicer
+ ${Green_font_prefix}2.${Font_color_suffix} Windows Embedded 8.1 Industry Pro x64 administrator密码为: Vicer
+ ${Green_font_prefix}3.${Font_color_suffix} 手动输入DD包地址
+ ${Green_font_prefix}4.${Font_color_suffix} 提供DD包获取地址(只是搬移不保证使用)
+ ${Green_font_prefix}5.${Font_color_suffix} 退出脚本
+ ${Tip} 所以系统重装脚本 均不支持 OpenVZ！
+"
+stty erase '^H' && read -p "(默认: 取消):" other_num
+	[[ -z "${other_num}" ]] && echo "已取消..." && start
+	if [[ ${other_num} == "1" ]]; then
+		wget --no-check-certificate -qO InstallNET.sh 'https://moeclub.org/attachment/LinuxShell/InstallNET.sh' && bash InstallNET.sh -dd 'https://moeclub.org/get-win7embx86-auto'
+	elif [[ ${other_num} == "2" ]]; then
+		wget --no-check-certificate -qO InstallNET.sh 'https://moeclub.org/attachment/LinuxShell/InstallNET.sh' && bash InstallNET.sh -dd 'https://moeclub.org/get-win8embx64-auto'
+	elif [[ ${other_num} == "3" ]]; then
+		echo "请输入DD包地址"
+	stty erase '^H' && read -p "(默认: https://moeclub.org/get-win7embx86-auto):" DD
+	[[ -z "${DD}" ]] && DD="https://moeclub.org/get-win7embx86-auto"
+	echo && echo ${Separator_1} && echo -e "	DD包地址 : ${Green_font_prefix}${DD}${Font_color_suffix}" && echo ${Separator_1} && echo
+	wget --no-check-certificate -qO InstallNET.sh 'https://moeclub.org/attachment/LinuxShell/InstallNET.sh' && bash InstallNET.sh -dd '$DD'
+	elif [[ ${other_num} == "4" ]]; then
+		    echo -e "DD包地址收集(未测试能否使用)下面为网址请自行浏览器打开
+http://down.80host.com/iso/dd/
+https://github.com/illkx/windows-dd
+https://github.com/ILLKX/Windows-VirtIO
+http://www.hostloc.com/forum.php?mod=viewthread&tid=439885&highlight=DD
+https://down.zhujiwiki.com/windows-dd/
+https://down.xieyang.org/
+http://www.wget.la/?dir=Windows
+
+${Green_font_prefix}1.${Font_color_suffix} 返回脚本
+"
+if [[ ${other_num} == "1" ]]; then
+	Reinstall_Win
+	else
+		Reinstall_Win
+		fi
+	elif [[ ${other_num} == "5" ]]; then
+		exit 0
+	else
+		echo -e "${Error} 请输入正确的数字 [1-5]" && start
+	fi
 }
 
 start
