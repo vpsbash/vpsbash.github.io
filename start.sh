@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
 #	Description: Test the vps and install the software
-#	Version: 0.0.7
+#	Version: 0.0.8
 #	Author: VPSBASH
 #	Email: VPSBASH@GMAIL.COM
 #	#Scripts copy from the big guys
 #=================================================
-sh_ver="0.0.7"
+sh_ver="0.0.8"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
@@ -738,7 +738,7 @@ Reinstall_Lin(){
 	Choose_Ver1
 
 wget --no-check-certificate -qO InstallNET.sh 'https://moeclub.org/attachment/LinuxShell/InstallNET.sh' && chmod a+x InstallNET.sh
-bash InstallNET.sh -$sys $sys1 -v $ver -a
+bash InstallNET.sh -$sys $sys1 -v $v -a
 }
 
 Choose_SYS(){
@@ -779,10 +779,10 @@ stty erase '^H' && read -p "(默认: 取消):" other_num
 	[[ -z "${other_num}" ]] && echo "已取消..." && Reinstall
 	if [[ ${other_num} == "1" ]]; then
 		v="64"
-		echo"系统版本 X64/amd64"
+		echo "系统版本 X64/amd64"
 	elif [[ ${other_num} == "2" ]]; then
 		v="32"
-		echo"系统版本 X32/i386"
+		echo "系统版本 X32/i386"
 	elif [[ ${other_num} == "3" ]]; then
 		exit 0
 	else
@@ -806,25 +806,25 @@ stty erase '^H' && read -p "(默认: 取消):" other_num
 	[[ -z "${other_num}" ]] && echo "已取消..." && Reinstall
 	if [[ ${other_num} == "1" ]]; then
 		sys1="7"
-		echo"系统版本 debian 7"
+		echo "系统版本 debian 7"
 	elif [[ ${other_num} == "2" ]]; then
 		sys1="8"
-		echo"系统版本 debian 8"
+		echo "系统版本 debian 8"
 	elif [[ ${other_num} == "3" ]]; then
 		sys1="9"
-		echo"系统版本 debian 9"
+		echo "系统版本 debian 9"
 	elif [[ ${other_num} == "4" ]]; then
 		sys1="14.04"
-		echo"系统版本 ubuntu 14.04"
+		echo "系统版本 ubuntu 14.04"
 	elif [[ ${other_num} == "5" ]]; then
 		sys1="16.04"
-		echo"系统版本 ubuntu 16.04"
+		echo "系统版本 ubuntu 16.04"
 	elif [[ ${other_num} == "6" ]]; then
 		sys1="18.04"
-		echo"系统版本 ubuntu 18.04"
+		echo "系统版本 ubuntu 18.04"
 	elif [[ ${other_num} == "7" ]]; then
 		sys1="6.9"
-		echo"系统版本 centos 6.9"
+		echo "系统版本 centos 6.9"
 	elif [[ ${other_num} == "8" ]]; then
 		exit 0
 	else
