@@ -750,14 +750,17 @@ echo "请选择你要的Linux版本
  ${Tip} 所以系统重装脚本 均不支持 OpenVZ！
  "
 
-echo stty erase '^H' && read -p "(默认: 取消):" other_num
+stty erase '^H' && read -p "(默认: 取消):" other_num
 	[[ -z "${other_num}" ]] && echo "已取消..." && Reinstall
 	if [[ ${other_num} == "1" ]]; then
 		sys="d"
+		echo "系统版本 debian"
 	elif [[ ${other_num} == "2" ]]; then
 		sys="u"
+		echo "系统版本 ubuntu"
 	elif [[ ${other_num} == "3" ]]; then
 		sys="c"
+		echo "系统版本 centos"
 	elif [[ ${other_num} == "4" ]]; then
 		exit 0
 	else
@@ -772,12 +775,14 @@ echo "请选择你要的Linux版本
  ${Green_font_prefix}3.${Font_color_suffix} 退出脚本
  ${Tip} 所以系统重装脚本 均不支持 OpenVZ！
  "
-echo stty erase '^H' && read -p "(默认: 取消):" other_num
+stty erase '^H' && read -p "(默认: 取消):" other_num
 	[[ -z "${other_num}" ]] && echo "已取消..." && Reinstall
 	if [[ ${other_num} == "1" ]]; then
 		v="64"
+		echo"系统版本 X64/amd64"
 	elif [[ ${other_num} == "2" ]]; then
 		v="32"
+		echo"系统版本 X32/i386"
 	elif [[ ${other_num} == "3" ]]; then
 		exit 0
 	else
@@ -797,22 +802,29 @@ echo "请选择你要的Linux版本
  ${Green_font_prefix}8.${Font_color_suffix} 退出脚本
  ${Tip} 所以系统重装脚本 均不支持 OpenVZ！
  "
-echo stty erase '^H' && read -p "(默认: 取消):" other_num
+stty erase '^H' && read -p "(默认: 取消):" other_num
 	[[ -z "${other_num}" ]] && echo "已取消..." && Reinstall
 	if [[ ${other_num} == "1" ]]; then
 		sys1="7"
+		echo"系统版本 debian 7"
 	elif [[ ${other_num} == "2" ]]; then
 		sys1="8"
+		echo"系统版本 debian 8"
 	elif [[ ${other_num} == "3" ]]; then
 		sys1="9"
+		echo"系统版本 debian 9"
 	elif [[ ${other_num} == "4" ]]; then
 		sys1="14.04"
+		echo"系统版本 ubuntu 14.04"
 	elif [[ ${other_num} == "5" ]]; then
 		sys1="16.04"
+		echo"系统版本 ubuntu 16.04"
 	elif [[ ${other_num} == "6" ]]; then
 		sys1="18.04"
+		echo"系统版本 ubuntu 18.04"
 	elif [[ ${other_num} == "7" ]]; then
 		sys1="6.9"
+		echo"系统版本 centos 6.9"
 	elif [[ ${other_num} == "8" ]]; then
 		exit 0
 	else
