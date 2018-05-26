@@ -10,7 +10,7 @@ export PATH
 #	Email: VPSBASH@Gmail.com
 #	#Scripts copy from the big guys
 #=================================================
-sh_ver="0.0.9"
+sh_ver="0.0.10"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
