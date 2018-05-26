@@ -15,7 +15,10 @@ wget -qO- --no-check-certificate https://vpsbash.github.io/socks5.sh && chmod 75
 ```
 wget -qO- --no-check-certificate https://vpsbash.github.io/iptables.sh && chmod 755 iptables.sh && ./iptables.sh
 ```
-
+## 一键安装Losserver
+```
+wget -qO- --no-check-certificate https://vpsbash.github.io/Losserver.sh && chmod 755 Losserver.sh && ./Losserver.sh
+```
 # 转载脚本
 ```
 wget -qO- --no-check-certificate https://vpsbash.github.io/ZBench.sh | bash
