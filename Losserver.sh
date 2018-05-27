@@ -5,12 +5,11 @@ export PATH
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
 #	Description: Install Losserver
-#	Version: 0.0.1
-#	Author: VPSBASH
-#	Email: VPSBASH@Gmail.com
+#	Version: 0.0.2
+#	Author: WolfSkylake
 #	#Scripts copy from the big guys
 #=================================================
-sh_ver="0.0.1"
+sh_ver="0.0.2"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
@@ -87,22 +86,20 @@ if [[ ${release} == "ubuntu" ]]; then
 	[ -n "`cat /etc/issue | grep "Ubuntu 14.04"`" ] && echo "Ubuntu 14.04" && KER_VER="3.16.0-43-generic"
 	sudo apt-get update
 	apt-get install -y linux-image-extra-$KER_VER linux-image-$KER_VER
-	del_kernel
-	sudo update-grub
-	reboot
-	exit 0
+	if [ -n "`dpkg -l | grep "linux-image-extra-$KER_VER"`" ]; then
+		del_kernel
+		sudo update-grub
+		reboot
+		exit 0
+	else
+		ehco -e "${Error} 内核安装失败，请检查你的网络和软件源"
+	fi
+
 elif [[ ${release} == "debian" ]]; then
 	[ -n "`cat /etc/issue | grep "Linux 9"`" ] && echo "Debian 9不支持安装锐速" && exit 0
-	[ -n "`cat /etc/issue | grep "Linux 8"`" ] && echo "Linux 8" && KER_VER="3.16.0-4-amd64-dbg" && D_VER="jessie"
+	[ -n "`cat /etc/issue | grep "Linux 8"`" ] && echo "Linux 8" && Debian8_kernel
 	[ -n "`cat /etc/issue | grep "Linux 7"`" ] && Debian7_kernel
-	cp /etc/apt/sources.list /etc/apt/sources.list_bak
-	echo -e "\ndeb http://ftp.debian.org/debian/ $D_VER-backports main" >> /etc/apt/sources.list
-	apt-get update
-	apt-get -t $D_VER-backports install linux-image-$KER_VER-$arch -y
-	del_kernel
-	update-grub
-	reboot
-	exit 0
+
 elif [[ ${release} == "centos" ]]; then
 	[ -n "`cat /etc/redhat-release |grep "CentOS Linux release 7"`" ] &&
 	yum -y install linux-firmware &&
@@ -111,10 +108,26 @@ elif [[ ${release} == "centos" ]]; then
 	rpm -ivh http://soft.91yun.org/ISO/Linux/CentOS/kernel/kernel-firmware-2.6.32-504.3.3.el6.noarch.rpm &&
 	rpm -ivh http://soft.91yun.org/ISO/Linux/CentOS/kernel/kernel-2.6.32-504.3.3.el6.x86_64.rpm --force
 	reboot
+
 else 
 	echo -e "${Error} 您的操作系统未在支持列表内" && exit 0
 	fi
 exit 0
+}
+Debian8_kernel(){
+[ -n "`cat /etc/issue | grep "Linux 8"`" ] && echo "Linux 8" && KER_VER="3.16.0-4-amd64-dbg" && D_VER="jessie"
+	cp /etc/apt/sources.list /etc/apt/sources.list_bak
+	echo -e "\ndeb http://ftp.debian.org/debian/ $D_VER-backports main" >> /etc/apt/sources.list
+	apt-get update
+	apt-get -t $D_VER-backports install linux-image-$KER_VER -y
+	if [ -n "`dpkg -l | grep "linux-image-$KER_VER"`" ]; then
+	del_kernel
+	update-grub
+	reboot
+	exit 0
+else
+	ehco -e "${Error} 内核安装失败，请检查你的网络和软件源"
+	fi
 }
 Debian7_kernel(){
 	[ -n "`cat /etc/issue | grep "Linux 7"`" ] && echo "Linux 7" && KER_VER="3.2.0-4" && D_VER="wheezy"
@@ -124,10 +137,14 @@ Debian7_kernel(){
 	echo -e "\ndeb http://ftp.debian.org/debian/ $D_VER-backports main" >> /etc/apt/sources.list
 	apt-get update
 	apt-get -t $D_VER-backports install linux-image-$KER_VER-$arch -y
+	if [ -n "`dpkg -l | grep "linux-image-$KER_VER-$arch"`" ]; then
 	del_kernel
 	update-grub
 	reboot
 	exit 0
+else
+	ehco -e "${Error} 内核安装失败，请检查你的网络和软件源"
+	fi
 }
 del_kernel(){
 	deb_total=`dpkg -l | grep linux-image | awk '{print $2}' | grep -v "${KER_VER}" | wc -l`
