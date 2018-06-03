@@ -5,12 +5,12 @@ export PATH
 #=================================================
 #	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
 #	Description: Test the vps and install the software
-#	Version: 0.0.12
+#	Version: 0.0.13
 #	Author: VPSBASH
 #	Email: VPSBASH@Gmail.com
 #	#Scripts copy from the big guys
 #=================================================
-sh_ver="0.0.12"
+sh_ver="0.0.13"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
@@ -34,6 +34,8 @@ check_sys(){
 		release="ubuntu"
 	elif cat /proc/version | grep -q -E -i "centos|red hat|redhat"; then
 		release="centos"
+	elif cat /proc/version | grep -q -E -i "Arch"; then
+		release="Arch"
     fi
 	bit=`uname -m`
 }
@@ -588,12 +590,15 @@ else
 	fi
 }
 Debian8_kernel(){
-[ -n "`cat /etc/issue | grep "Linux 8"`" ] && echo "Linux 8" && KER_VER="3.16.0-4-amd64-dbg" && D_VER="jessie"
+[ -n "`uname -m | grep "x86_64"`" ] && echo "amd64" && arch="amd64"	
+[ -n "`uname -m | grep "i686"`" ] && echo "i686" && arch="686-pae"
+[ -n "`cat /etc/issue | grep "Linux 8"`" ] && echo "Linux 8" && KER_VER="3.16.0-4" && D_VER="jessie"
+
 	cp /etc/apt/sources.list /etc/apt/sources.list_bak
 	echo -e "\ndeb http://ftp.debian.org/debian/ $D_VER-backports main" >> /etc/apt/sources.list
 	apt-get update
 	apt-get -t $D_VER-backports install linux-image-$KER_VER -y
-	if [ -n "`dpkg -l | grep "linux-image-$KER_VER"`" ]; then
+	if [ -n "`dpkg -l | grep "linux-image-$KER_VER-$arch-dbg"`" ]; then
 	del_kernel
 	update-grub
 	reboot
