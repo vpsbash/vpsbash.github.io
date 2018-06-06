@@ -3,21 +3,21 @@
 
 ## 一个脚本 完成你所想要的一切
 ```
-rm -f start.sh wget https://vpsbash.github.io/start.sh && chmod 755 start.sh && ./start.sh
+rm -f start.sh && wget https://vpsbash.github.io/start.sh && chmod 755 start.sh && ./start.sh
 ```
 
 ## 一键搭建Socks5
 ```
-rm -f socks5.sh wget https://vpsbash.github.io/socks5.sh && chmod 755 socks5.sh && ./socks5.sh
+rm -f socks5.sh && wget https://vpsbash.github.io/socks5.sh && chmod 755 socks5.sh && ./socks5.sh
 ```
 
 ## 一键开放关闭iptables端口
 ```
-rm -f iptables.sh wget https://vpsbash.github.io/iptables.sh && chmod 755 iptables.sh && ./iptables.sh
+rm -f iptables.sh && wget https://vpsbash.github.io/iptables.sh && chmod 755 iptables.sh && ./iptables.sh
 ```
 ## 一键安装Losserver
 ```
-rm -f Losserver.sh wget https://vpsbash.github.io/Losserver.sh && chmod 755 Losserver.sh && ./Losserver.sh
+rm -f Losserver.sh && wget https://vpsbash.github.io/Losserver.sh && chmod 755 Losserver.sh && ./Losserver.sh
 ```
 # 转载脚本
 ```
