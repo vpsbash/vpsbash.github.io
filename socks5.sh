@@ -39,7 +39,7 @@ check_sys(){
 	bit=`uname -m`
 }
 S5(){
-echo -e "输入你的选择 ${Red_font_prefix}$[v${sh_ver}]{Font_color_suffix}
+echo -e "输入你的选择 ${Red_font_prefix}[v${sh_ver}]${Font_color_suffix}
  ${Green_font_prefix}1.${Font_color_suffix} 安装socks5
  ${Green_font_prefix}2.${Font_color_suffix} 启动socks5
  ${Green_font_prefix}3.${Font_color_suffix} 停止sock5
