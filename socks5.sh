@@ -2,16 +2,16 @@
 PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin:~/bin
 export PATH
 
-#=================================================
-#	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+
-#	Description: Test the vps and install the software
-#	Version: 0.0.1
+#=====================================================
+#	System Required: CentOS 6+/Debian 6+/Ubuntu 14.04+ 
+#	Description: Install socks5
+#	Version: 0.0.3
 #	Author: VPSBASH
 #	Email: VPSBASH@GMAIL.COM
 #	#Scripts copy from the big guys
-#=================================================
+#=====================================================
 
-sh_ver="0.0.1"
+sh_ver="0.0.3"
 Info="${Green_font_prefix}[信息]${Font_color_suffix}"
 Error="${Red_font_prefix}[错误]${Font_color_suffix}"
 Tip="${Green_font_prefix}[注意]${Font_color_suffix}"
@@ -38,14 +38,62 @@ check_sys(){
     fi
 	bit=`uname -m`
 }
-
-Socks5_Stop()
-{
-kill -9 $(ps aux | grep "gost" | sed '/grep/d' | awk '{print $2}')
-exit 0
+S5(){
+echo -e "输入你的选择 ${Red_font_prefix}$[v${sh_ver}]{Font_color_suffix}
+ ${Green_font_prefix}1.${Font_color_suffix} 安装socks5
+ ${Green_font_prefix}2.${Font_color_suffix} 启动socks5
+ ${Green_font_prefix}3.${Font_color_suffix} 停止sock5
+ ${Green_font_prefix}4.${Font_color_suffix} 卸载socks5
+ ${Green_font_prefix}5.${Font_color_suffix} 退出脚本
+"
+stty erase '^H' && read -p "(默认: 取消):" other_num
+	[[ -z "${other_num}" ]] && echo "已取消..." && exit 0
+	if [[ ${other_num} == "1" ]]; then
+		Socks5_Set
+	elif [[ ${other_num} == "2" ]]; then
+		Socks5_Up
+	elif [[ ${other_num} == "3" ]]; then
+		Socks5_Stop
+	elif [[ ${other_num} == "4" ]]; then
+		Socks5_Unset
+	elif [[ ${other_num} == "5" ]]; then
+		exit 0
+	else
+		echo -e "${Error} 请输入正确的数字 [1-4]" && exit 0
+	fi
 }
-
-
+Socks5_Set()
+{
+	check_root
+    check_sys
+if [[ ${release} == "centos" ]]; then yum -y install wget -y
+elif [[ ${release} == "debian" ]]; then apt-get -y install wget -y
+elif [[ ${release} == "ubuntu" ]]; then sudo apt-get -y install wget -y
+else
+		echo -e "${Error} 您的操作系统未在支持列表内" && exit 0
+	fi
+[ -n "`uname -m | grep "x86_64"`" ] && echo "amd64" && arch="amd64"
+[ -n "`uname -m | grep "i686"`" ] && echo "i686" && arch="386"
+https://github.com/ginuerzh/gost/releases/download/v2.5/gost_2.5_linux_$arch.tar.gz
+tar -zxf gost_2.5_linux_$arch.tar.gz
+cp gost_2.5_linux_$arch/gost /usr/bin/gost
+rm -rf gost_2.5_linux_$arch*
+echo "安装完成，请启动它"
+    S5
+}
+Socks5_Up()
+{
+    user    
+	passwd
+	port
+nohup gost -L $user:$passwd@:$port socks5://:$port > /dev/null 2>&1 &
+echo "nohup gost -L $user:$passwd@:$port socks5://:$port > /dev/null 2>&1 &" >> /etc/rc.local
+chmod 755 /etc/rc.local
+echo "TeleGrem 专用链接"
+IP=$(wget -qO- -t1 -T2 ipinfo.io/ip)
+echo " tg://socks?server=$IP&port=$port&user=$user&pass=$passwd "
+    S5
+}
 user(){
 echo "请输入要设置的用户名"
 	stty erase '^H' && read -p "(默认: user):" user
@@ -64,52 +112,18 @@ echo -e "请输入要开启的端口"
 	[[ -z "${port}" ]] && port="1234"
 	echo && echo ${Separator_1} && echo -e "	端口 : ${Green_font_prefix}${port}${Font_color_suffix}" && echo ${Separator_1} && echo
 }
-Socks5_Up()
+Socks5_Stop()
 {
-    user    
-	passwd
-	port
-nohup gost -L $user:$passwd@:$port socks5://:$port > /dev/null 2>&1 &
-echo "TeleGrem 专用链接"
-IP=$(ip a|grep -w 'inet'|grep 'global'|sed 's/^.*inet //g'|sed 's/\/[0-9][0-9].*$//g')
-echo "tg://socks?server=$IP&port=$port&user=$user&pass=$passwd"
-
+    kill -9 $(ps aux | grep "gost" | sed '/grep/d' | awk '{print $2}')
+    sed -i '/^nohup.*/d' /etc/rc.local
+    S5
 }
-
-Socks5_Set()
-{
-    check_sys
-if [[ ${release} == "centos" ]]; then yum -y install wget -y
-elif [[ ${release} == "debian" ]]; then apt-get -y install wget -y
-elif [[ ${release} == "ubuntu" ]]; then sudo apt-get -y install wget -y
-else
-		echo -e "${Error} 您的操作系统未在支持列表内" && exit 0
-	fi
-Ver=`wget -qO- https://github.com/ginuerzh/gost/releases/latest | grep "css-truncate-target" | awk '{print $2}' | sed 's/class=\"css-truncate-target\">//g' | sed 's/<\/span>//g'`
-Vernv=`echo ${Ver} | sed 's/v//'`
-wget https://github.com/ginuerzh/gost/releases/download/${Ver}/gost_${Vernv}_linux_amd64.tar.gz
-tar -zxf gost_${Vernv}_linux_amd64.tar.gz
-cp gost_${Vernv}_linux_amd64/gost /usr/bin/gost
-rm -rf gost_${Vernv}_linux_amd64*
-echo "安装完成，请启动它"
-exit 1
+Socks5_Unset(){
+    kill -9 $(ps aux | grep "gost" | sed '/grep/d' | awk '{print $2}')
+    sed -i '/^nohup.*/d' /etc/rc.local
+    rm -rf /usr/bin/gost
+    S5
 }
-
-
-echo -e "输入你的选择 ${Red_font_prefix}${Font_color_suffix}
- ${Green_font_prefix}1.${Font_color_suffix} 安装socks5
- ${Green_font_prefix}2.${Font_color_suffix} 启动socks5
- ${Green_font_prefix}3.${Font_color_suffix} 停止sock5
-"
-stty erase '^H' && read -p "(默认: 取消):" other_num
-	[[ -z "${other_num}" ]] && echo "已取消..." && exit 0
-	if [[ ${other_num} == "1" ]]; then
-		Socks5_Set
-	elif [[ ${other_num} == "2" ]]; then
-		Socks5_Up
-	elif [[ ${other_num} == "3" ]]; then
-		Socks5_Stop
-	else
-		echo -e "${Error} 请输入正确的数字 [1-3]" && exit 0
-	fi
-
+S5
+esac
+fi
