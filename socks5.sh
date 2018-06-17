@@ -104,7 +104,7 @@ passwd(){
 echo "请输入要设置的密码"
 	stty erase '^H' && read -p "(默认: passwd):" passwd
 	[[ -z "${passwd}" ]] && passwd="passwd"
-	echo && echo ${Separator_1} && echo -e "	密码 : ${Green_font_prefix}${password}${Font_color_suffix}" && echo ${Separator_1} && echo
+	echo && echo ${Separator_1} && echo -e "	密码 : ${Green_font_prefix}${passwd}${Font_color_suffix}" && echo ${Separator_1} && echo
 }
 port(){
 echo -e "请输入要开启的端口"
