@@ -74,7 +74,7 @@ else
 	fi
 [ -n "`uname -m | grep "x86_64"`" ] && echo "amd64" && arch="amd64"
 [ -n "`uname -m | grep "i686"`" ] && echo "i686" && arch="386"
-https://github.com/ginuerzh/gost/releases/download/v2.5/gost_2.5_linux_$arch.tar.gz
+wget https://github.com/ginuerzh/gost/releases/download/v2.5/gost_2.5_linux_$arch.tar.gz
 tar -zxf gost_2.5_linux_$arch.tar.gz
 cp gost_2.5_linux_$arch/gost /usr/bin/gost
 rm -rf gost_2.5_linux_$arch*
