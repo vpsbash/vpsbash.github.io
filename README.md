@@ -48,3 +48,6 @@ wget -qO- --no-check-certificate https://vpsbash.github.io/bench.sh | bash
 wget -qO- --no-check-certificate https://vpsbash.github.io/unixbench.sh | bash
 ```
 
+```
+wget -qO- --no-check-certificate https://vpsbash.github.io/c69toc7.sh | bash
+```
