@@ -3,7 +3,7 @@
 
 
 ```
-wget -N --no-check-certificate https://cdn.jsdelivr.net/gh/vpsbash/vpsbash.github.io/warp.sh && chmod +x warp.sh && ./warp.sh
+wget -N --no-check-certificate -qO- https://cdn.jsdelivr.net/gh/vpsbash/vpsbash.github.io/warp.sh | bash
 ```
 
 ## 一个脚本 完成你所想要的一切
