@@ -1,9 +1,24 @@
+	if [[ -f /etc/redhat-release ]]; then
+		release="Centos"
+	elif cat /etc/issue | grep -q -E -i "debian"; then
+		release="Debian"
+	elif cat /etc/issue | grep -q -E -i "ubuntu"; then
+		release="Ubuntu"
+	elif cat /etc/issue | grep -q -E -i "centos|red hat|redhat"; then
+		release="Centos"
+	elif cat /proc/version | grep -q -E -i "debian"; then
+		release="Debian"
+	elif cat /proc/version | grep -q -E -i "ubuntu"; then
+		release="Ubuntu"
+	elif cat /proc/version | grep -q -E -i "centos|red hat|redhat"; then
+		release="Centos"
+	fi
 	if [ $release = "Debian" ]
 	then
 		apt install sudo -y && apt install curl sudo lsb-release iptables -y
-                echo "deb http://deb.debian.org/debian $(lsb_release -sc)-backports main" | sudo tee /etc/apt/sources.list.d/backports.list
-                apt update
-                apt -y --no-install-recommends install openresolv dnsutils wireguard-tools
+		echo "deb http://deb.debian.org/debian $(lsb_release -sc)-backports main" | sudo tee /etc/apt/sources.list.d/backports.list
+		apt update
+		apt -y --no-install-recommends install openresolv dnsutils wireguard-tools
 	elif [ $release = "Ubuntu" ]
 	then
 		apt-get update -y &&  apt install sudo -y
