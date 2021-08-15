@@ -1,6 +1,11 @@
 # 欢迎来到vpsbash
 >本站所有测试脚本均为来自各路大佬
 
+
+```
+wget -N --no-check-certificate https://cdn.jsdelivr.net/gh/vpsbash/vpsbash.github.io/warp.sh && chmod +x warp.sh && ./warp.sh
+```
+
 ## 一个脚本 完成你所想要的一切
 ```
 rm -f start.sh && wget https://vpsbash.github.io/start.sh && chmod 755 start.sh && ./start.sh
